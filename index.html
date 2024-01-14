@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>가계부</title>
+  </head>
+
+  <body>
+    <header class="financial_header">
+      <h1>가계부</h1>
+    </header>
+    <main>
+      <form class="current_money">
+        <div>
+          <p>현재 자산</p>
+          <input
+            id="current_money_input"
+            type="text"
+            placeholder="현재 자산을 입력해주세요" />
+          <p>원</p>
+        </div>
+        <button id="current_money_button">현재 자산 등록</button>
+      </form>
+      <div>
+        <p>소비내역 작성하기</p>
+        <form>
+          <div>
+            <p>카테고리</p>
+            <select id="consum_category" required>
+              <option value="">카테고리를 선택해주세요</option>
+              <option value="커피">커피</option>
+              <option value="밥">밥</option>
+              <option value="쇼핑">쇼핑</option>
+              <option value="마트">마트</option>
+            </select>
+          </div>
+          <div>
+            <p>지출금액</p>
+            <input
+              id="consum_money"
+              type="text"
+              placeholder="지출금액을 입력해주세요"
+              required />
+          </div>
+          <div>
+            <p>내용</p>
+            <input
+              id="consum_content"
+              type="text"
+              placeholder="내용을 입력해주세요"
+              required />
+          </div>
+          <button id="consum_button">작성완료</button>
+        </form>
+      </div>
+      <div id="history"></div>
+    </main>
+    <script src="/financial/index.js" type="module"></script>
+  </body>
+</html>

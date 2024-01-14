@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.financial_header {
+  background: #828282;
+}
+
+.financial_header > h1 {
+  margin: 0;
+  text-align: center;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: 300;
+  color: #ffffff;
+}
+
+.current_money {
+  width: 100%;
+  padding: 10px;
+  background: #dcdcdc;
+}
+.current_money > div {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.current_money > div > p {
+  font-size: 17px;
+}
+.current_money > div > input {
+  width: 50%;
+  padding: 5px 5px;
+  font-size: 17px;
+  margin: 10px;
+  border-style: none;
+}
+.current_money > button {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  margin-bottom: 10px;
+  border-style: none;
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: 15px;
+  padding: 10px;
+  width: 20%;
+  background: #fff;
+}
