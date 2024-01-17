@@ -1,6 +1,7 @@
 export const userStore = {
   currentFunds: 0,
   firstpush: true,
+
   content: {
     id: "",
     category: "",
