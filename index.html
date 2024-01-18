@@ -1,64 +1,96 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
-    <title>가계부</title>
+    <title>Document</title>
   </head>
 
   <body>
-    <header class="financial_header">
-      <h1>가계부</h1>
-    </header>
-    <main>
-      <form class="current_money">
-        <div>
-          <p>현재 자산</p>
-          <input
-            id="current_money_input"
-            type="text"
-            placeholder="현재 자산을 입력해주세요" />
-          <p>원</p>
-        </div>
-        <button id="current_money_button">현재 자산 등록</button>
-      </form>
-      <div>
-        <p>소비내역 작성하기</p>
-        <form>
-          <div>
-            <p>카테고리</p>
-            <select id="consum_category" required>
-              <option value="">카테고리를 선택해주세요</option>
-              <option value="커피">커피</option>
-              <option value="밥">밥</option>
-              <option value="쇼핑">쇼핑</option>
-              <option value="마트">마트</option>
-            </select>
-          </div>
-          <div>
-            <p>지출금액</p>
-            <input
-              id="consum_money"
-              type="text"
-              placeholder="지출금액을 입력해주세요"
-              required />
-          </div>
-          <div>
-            <p>내용</p>
-            <input
-              id="consum_content"
-              type="text"
-              placeholder="내용을 입력해주세요"
-              required />
-          </div>
-          <button id="consum_button">작성완료</button>
-        </form>
-      </div>
-      <div id="history"></div>
-    </main>
+    <main id="container">
+      <h1 class="title">🐷 가계부</h1>
 
-    <script src="./index.js" type="module"></script>
+      <!-- 현재 자산 start -->
+      <div class="current-asset">
+        <div class="current-asset-row c-container-price">
+          <label class="current-asset-label">현재 자산</label>
+          <div class="current-asset-value-wrapper">
+            <p class="v-show current-asset-value">-</p>
+            <span class="v-none current-asset-loader">
+              <i class="fa-solid fa-circle-notch fa-spin"></i>
+            </span>
+          </div>
+          <input
+            type="number"
+            class="v-none current-asset-input"
+            placeholder="현재 자산을 등록해주세요" />
+        </div>
+        <span class="v-none current-asset-button-loader">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+        <button class="c-button c-large-button current-asset-button v-none">
+          현재 자산 등록
+        </button>
+      </div>
+      <!-- 현재 자산 end -->
+
+      <!-- 소비내역 작성하기 start -->
+      <div class="add-item">
+        <button class="c-button add-item-button">➕ 소비내역 작성하기</button>
+      </div>
+
+      <section class="v-none add-item-detail">
+        <h3>소비내역 작성하기</h3>
+        <section class="item-section">
+          <label class="c-label" for="item-category">카테고리</label>
+          <input
+            class="c-input"
+            list="item-categories"
+            id="item-category"
+            name="item-category"
+            placeholder="카테고리를 선택해주세요"
+            required />
+          <datalist id="item-categories">
+            <option value="카페"></option>
+            <option value="편의점"></option>
+            <option value="식사"></option>
+            <option value="쇼핑"></option>
+          </datalist>
+        </section>
+        <section class="item-section c-container-price">
+          <label class="c-label" for="item-price">지출 금액</label>
+          <input
+            class="c-input"
+            type="number"
+            id="item-price"
+            name="item-price"
+            placeholder="지출금액을 입력해주세요"
+            min="0"
+            required />
+        </section>
+        <section class="item-section">
+          <label class="c-label" for="item-description">내용</label>
+          <input
+            class="c-input"
+            type="text"
+            id="item-description"
+            name="item-description"
+            required
+            placeholder="내용을 입력해주세요" />
+        </section>
+        <button class="c-button item-submit-button">등록하기</button>
+      </section>
+
+      <!-- 소비내역 리스트 start -->
+      <section class="consumption-details">
+        <ul class="consumption-details-list"></ul>
+        <span class="v-none consumption-details-loader">
+          <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+      </section>
+      <!-- 소비내역 리스트 end -->
+    </main>
+    <script src="./js/index.js" type="module"></script>
   </body>
 </html>
