@@ -1,6 +1,7 @@
-import { getCurrentAsset } from "../api/get-current-asset.js";
-import { toShow, toHidden } from "./util.js";
-import { addCurrentAsset } from "../api/add-current-asset.js";
+import { updateCurrentAsset } from "../api/update-current-asset";
+import { getCurrentAsset } from "../api/get-current-asset";
+import { toHidden, toShow } from "./util";
+
 const $currentAssetValue = document.querySelector(".current-asset-value");
 const $currentAssetLoader = document.querySelector(".current-asset-loader");
 const $currentAssetInput = document.querySelector(".current-asset-input");
@@ -9,50 +10,49 @@ const $currentAssetButtonLoader = document.querySelector(
   ".current-asset-button-loader"
 );
 const $addItemButton = document.querySelector(".add-item-button");
-//데이터 조회 / 업데이트.
 
 export const initCurrentAsset = () => {
-  handleCurrentAsset();
+  handleGetCurrentAsset();
 
-  $currentAssetButton.addEventListener("click", (e) => {
+  $currentAssetButton.addEventListener("click", function () {
     const inputValue = $currentAssetInput.value;
     if (inputValue > 0) {
       handleAddCurrentAsset(inputValue);
+      toHidden($currentAssetButton);
     } else {
       console.warn("0원 이상이 아닙니다.");
     }
   });
 };
 
-const handleAddCurrentAsset = async (inputValue) => {
-  //   const buttonText = $currentAssetButton.textContent;
-  //   $currentAssetButton.textContent = "";
-  toHidden($currentAssetButton);
+export const handleAddCurrentAsset = async (inputValue) => {
   toShow($currentAssetButtonLoader);
-  await addCurrentAsset(Number(inputValue));
-  //   await new Promise((resolve, reject) => {
-  //     setTimeout(() => {
-  //       resolve(1);
-  //     }, 3000);
-  //   });
+  toHidden($currentAssetButton);
+
+  await updateCurrentAsset(Number(inputValue));
+
   toHidden($currentAssetButtonLoader);
   toShow($currentAssetButton);
-  //   $currentAssetButton.textContent = buttonText;
+
+  await handleGetCurrentAsset();
 };
-const handleCurrentAsset = async () => {
+
+const handleGetCurrentAsset = async () => {
   toShow($currentAssetLoader);
+
   try {
     const { price } = await getCurrentAsset();
     if (price > 0) {
-      toHidden($currentAssetInput);
       $currentAssetValue.textContent = price.toLocaleString();
+      toHidden($currentAssetInput);
     } else {
-      toShow($currentAssetButton);
       toShow($currentAssetInput);
+      toShow($currentAssetButton);
       toHidden($addItemButton);
     }
   } catch (err) {
-    console.error("현재 자산을 조회하는데 실패했습니다.");
+    console.error("현재자산을 조회한는데 실패했습니다.");
   }
+
   toHidden($currentAssetLoader);
 };

@@ -6,10 +6,12 @@ import { initCurrentAsset } from "./current-asset.js";
 import "@fortawesome/fontawesome-free/js/all.js";
 import "../style/index.scss";
 import { initConsumptionDetails } from "./consumption-details.js";
+import { initAddItem } from "./add-items.js";
 
 const initApp = () => {
   initCurrentAsset();
   initConsumptionDetails();
+  initAddItem();
 };
 
 initApp();
