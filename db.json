@@ -1,23 +1,6 @@
 {
   "current-asset": {
-    "price": 900
+    "price": 87000
   },
-  "consumption-details": [
-    {
-      "id": 2,
-      "price": 100,
-      "category": "카페",
-      "fundsAtTheTime": 900,
-      "description": "아메리카노",
-      "createAt": "2021-03-14"
-    },
-    {
-      "price": 100,
-      "category": "쇼핑",
-      "description": "초콜릿",
-      "fundsAtTheTime": 900,
-      "createAt": "2024-01-18T15:49:12.338Z",
-      "id": 3
-    }
-  ]
+  "consumption-details": []
 }
