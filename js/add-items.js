@@ -43,7 +43,7 @@ const handleAddConsumptionDetail = async () => {
       Number($itemPrice.value);
     console.log(fundsAtTheTime);
     await addConsumptionDetail({
-      price: Number($itemPrice.value),
+      amount: Number($itemPrice.value),
       category: $itemCategory.value,
       description: $itemDescription.value,
       fundsAtTheTime,

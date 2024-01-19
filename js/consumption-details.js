@@ -1,6 +1,8 @@
 import { getConsumptionDetails } from "../api/get-consumption-details";
+import { getCurrentAsset } from "../api/get-current-asset";
 import { toHidden, toShow } from "./util";
-
+import { deleteConsumptionDetail } from "../api/delete-consumption-details";
+import { handleAddCurrentAsset } from "./current-asset";
 const $consumptionDetailsList = document.querySelector(
   ".consumption-details-list"
 );
@@ -23,63 +25,91 @@ export const handleGetConsumptionDetails = async () => {
   $consumptionDetailsList.textContent = "";
   const list = await getConsumptionDetails();
 
-  list.map(({ createAt, category, description, price, fundsAtTheTime }) => {
-    const $li = createElement("li", "consumption-details-per-day");
-    const $pDate = createElement("p", "consumption-details-date");
-    const $itemSection = createElement("section", "consumption-details-item");
-    const $itemSectionColumn = createElement(
-      "section",
-      "consumption-details-item-column"
-    );
-    const $itemCategory = createElement("section");
-    const $consumptionDetailsDetail = createElement(
-      "div",
-      "consumption-details-detail"
-    );
-    const $consumptionDetailsDetailTitle = createElement(
-      "div",
-      "consumption-details-detail-row consumption-details-detail-title"
-    );
-    const $consumptionDetailsDetailSubtitle = createElement(
-      "div",
-      "consumption-details-detail-row consumption-details-detail-subtitle"
-    );
-    const $consumptionDetailsItemCaption = createElement(
-      "section",
-      "consumption-details-item-caption"
-    );
-    const $deleteSection = createElement("div", "delete-section");
-    const $deleteButton = createElement("button", "delete-button");
+  //오름차순 정렬
+  list.sort((a, b) => a.id - b.id);
 
-    // 날짜
-    $pDate.textContent = new Date(createAt).toLocaleDateString();
-    $li.appendChild($pDate);
-    // 카테고리
-    $itemCategory.textContent = category;
-    $itemSectionColumn.appendChild($itemCategory);
+  list.map(
+    ({ createAt, category, description, amount, fundsAtTheTime, id }) => {
+      const $li = createElement("li", "consumption-details-per-day");
+      const $pDate = createElement("p", "consumption-details-date");
+      const $itemSection = createElement("section", "consumption-details-item");
+      const $itemSectionColumn = createElement(
+        "section",
+        "consumption-details-item-column"
+      );
+      const $itemCategory = createElement("section");
+      const $consumptionDetailsDetail = createElement(
+        "div",
+        "consumption-details-detail"
+      );
+      const $consumptionDetailsDetailTitle = createElement(
+        "div",
+        "consumption-details-detail-row consumption-details-detail-title"
+      );
+      const $consumptionDetailsDetailSubtitle = createElement(
+        "div",
+        "consumption-details-detail-row consumption-details-detail-subtitle"
+      );
+      const $consumptionDetailsItemCaption = createElement(
+        "section",
+        "consumption-details-item-caption"
+      );
+      const $deleteSection = createElement("div", "delete-section");
+      const $deleteButton = createElement("button", "delete-button");
 
-    // 삭제 버튼
-    $deleteButton.textContent = "🗑";
-    $deleteSection.appendChild($deleteButton);
+      // 날짜
+      $pDate.textContent = new Date(createAt).toLocaleDateString();
+      $li.appendChild($pDate);
+      // 카테고리
+      $itemCategory.textContent = category;
+      $itemSectionColumn.appendChild($itemCategory);
 
-    // 상세내역
-    $consumptionDetailsDetailTitle.textContent = description;
-    $consumptionDetailsDetailSubtitle.textContent = price + "원";
-    $consumptionDetailsDetail.appendChild($consumptionDetailsDetailTitle);
-    $consumptionDetailsDetail.appendChild($consumptionDetailsDetailSubtitle);
+      // 삭제 버튼
+      $deleteButton.textContent = "🗑";
+      $deleteButton.id = id;
+      $deleteSection.appendChild($deleteButton);
 
-    // 캡션
-    $consumptionDetailsItemCaption.textContent = `남은 자산 ${fundsAtTheTime.toLocaleString()}원`;
+      // 상세내역
+      $consumptionDetailsDetailTitle.textContent = description;
+      $consumptionDetailsDetailSubtitle.textContent = amount + "원";
+      $consumptionDetailsDetail.appendChild($consumptionDetailsDetailTitle);
+      $consumptionDetailsDetail.appendChild($consumptionDetailsDetailSubtitle);
 
-    // 최종 추가
-    $itemSectionColumn.appendChild($consumptionDetailsDetail);
-    $itemSectionColumn.appendChild($deleteSection);
-    $itemSection.appendChild($itemSectionColumn);
-    $itemSection.appendChild($consumptionDetailsItemCaption);
+      // 캡션
+      $consumptionDetailsItemCaption.textContent = `남은 자산 ${fundsAtTheTime.toLocaleString()}원`;
 
-    $li.appendChild($itemSection);
-    $consumptionDetailsList.appendChild($li);
-  });
+      // 최종 추가
+      $itemSectionColumn.appendChild($consumptionDetailsDetail);
+      $itemSectionColumn.appendChild($deleteSection);
+      $itemSection.appendChild($itemSectionColumn);
+      $itemSection.appendChild($consumptionDetailsItemCaption);
+
+      $li.appendChild($itemSection);
+      $consumptionDetailsList.appendChild($li);
+      addEventListener($deleteButton);
+    }
+  );
 
   toHidden($consumptionDetailsLoader);
+};
+
+const addEventListener = (deleteButton) => {
+  deleteButton.addEventListener("click", () => {
+    handleConsumptionDetailsDelete(deleteButton.id);
+  });
+};
+
+const handleConsumptionDetailsDelete = async (deleteId) => {
+  const list = await getConsumptionDetails();
+  let { price } = await getCurrentAsset();
+  list.map(({ id, amount }) => {
+    if (id == Number(deleteId)) {
+      price += amount;
+    }
+  });
+  await handleAddCurrentAsset(price);
+  await deleteConsumptionDetail(deleteId);
+
+  handleGetConsumptionDetails();
+  // console.log(price);
 };
